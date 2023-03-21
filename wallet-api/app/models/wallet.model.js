@@ -1,8 +1,8 @@
 module.exports = mongoose => {
   var schema = mongoose.Schema(
     {
-      title: String,
-      description: String,
+      wallet: String,
+      address: String,
       published: Boolean
     },
     { timestamps: true }
@@ -14,6 +14,6 @@ module.exports = mongoose => {
     return object;
   });
 
-  const Tutorial = mongoose.model("tutorial", schema);
-  return Tutorial;
+  const Wallet = mongoose.model("wallet", schema);
+  return Wallet;
 };

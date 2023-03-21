@@ -1,42 +1,42 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import WalletDataService from "../services/wallets.service";
 import { Link } from "react-router-dom";
 
-export default class TutorialsList extends Component {
+export default class WalletsList extends Component {
   constructor(props) {
     super(props);
-    this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.retrieveTutorials = this.retrieveTutorials.bind(this);
+    this.onChangeSearchWallet = this.onChangeSearchWallet.bind(this);
+    this.retrieveWallets = this.retrieveWallets.bind(this);
     this.refreshList = this.refreshList.bind(this);
-    this.setActiveTutorial = this.setActiveTutorial.bind(this);
-    this.removeAllTutorials = this.removeAllTutorials.bind(this);
-    this.searchTitle = this.searchTitle.bind(this);
+    this.setActiveWallet = this.setActiveWallet.bind(this);
+    this.removeAllWallets = this.removeAllWallets.bind(this);
+    this.searchWallet = this.searchWallet.bind(this);
 
     this.state = {
-      tutorials: [],
-      currentTutorial: null,
+      wallets: [],
+      currentWallet: null,
       currentIndex: -1,
-      searchTitle: ""
+      searchWallet: ""
     };
   }
 
   componentDidMount() {
-    this.retrieveTutorials();
+    this.retrieveWallets();
   }
 
-  onChangeSearchTitle(e) {
-    const searchTitle = e.target.value;
+  onChangeSearchWallet(e) {
+    const searchWallet = e.target.value;
 
     this.setState({
-      searchTitle: searchTitle
+      searchWallet: searchWallet
     });
   }
 
-  retrieveTutorials() {
-    TutorialDataService.getAll()
+  retrieveWallets() {
+    WalletDataService.getAll()
       .then(response => {
         this.setState({
-          tutorials: response.data
+          wallets: response.data
         });
         console.log(response.data);
       })
@@ -46,22 +46,22 @@ export default class TutorialsList extends Component {
   }
 
   refreshList() {
-    this.retrieveTutorials();
+    this.retrieveWallets();
     this.setState({
-      currentTutorial: null,
+      currentWallet: null,
       currentIndex: -1
     });
   }
 
-  setActiveTutorial(tutorial, index) {
+  setActiveWallet(wallet, index) {
     this.setState({
-      currentTutorial: tutorial,
+      currentWallet: wallet,
       currentIndex: index
     });
   }
 
-  removeAllTutorials() {
-    TutorialDataService.deleteAll()
+  removeAllWallets() {
+    WalletDataService.deleteAll()
       .then(response => {
         console.log(response.data);
         this.refreshList();
@@ -71,16 +71,16 @@ export default class TutorialsList extends Component {
       });
   }
 
-  searchTitle() {
+  searchWallet() {
     this.setState({
-      currentTutorial: null,
+      currentWallet: null,
       currentIndex: -1
     });
 
-    TutorialDataService.findByTitle(this.state.searchTitle)
+    WalletDataService.findByWallet(this.state.searchWallet)
       .then(response => {
         this.setState({
-          tutorials: response.data
+          Wallets: response.data
         });
         console.log(response.data);
       })
@@ -90,7 +90,7 @@ export default class TutorialsList extends Component {
   }
 
   render() {
-    const { searchTitle, tutorials, currentTutorial, currentIndex } = this.state;
+    const { searchWallet, wallets, currentWallet, currentIndex } = this.state;
 
     return (
       <div className="list row">
@@ -100,14 +100,14 @@ export default class TutorialsList extends Component {
               type="text"
               className="form-control"
               placeholder="Search by Wallet name"
-              value={searchTitle}
-              onChange={this.onChangeSearchTitle}
+              value={searchWallet}
+              onChange={this.onChangeSearchWallet}
             />
             <div className="input-group-append">
               <button
                 className="btn btn-outline-secondary"
                 type="button"
-                onClick={this.searchTitle}
+                onClick={this.searchWallet}
               >
                 Search
               </button>
@@ -118,53 +118,53 @@ export default class TutorialsList extends Component {
           <h4>Wallets List</h4>
 
           <ul className="list-group">
-            {tutorials &&
-              tutorials.map((tutorial, index) => (
+            {Wallets &&
+              Wallets.map((wallet, index) => (
                 <li
                   className={
                     "list-group-item " +
-                    (index === currentIndex ? "active" : "")
+                    (index == currentIndex ? "active" : "")
                   }
-                  onClick={() => this.setActiveTutorial(tutorial, index)}
+                  onClick={() => this.setActiveWallet(Wallet, index)}
                   key={index}
                 >
-                  {tutorial.title}
+                  {Wallet.wallet}
                 </li>
               ))}
           </ul>
 
           <button
             className="m-3 btn btn-sm btn-danger"
-            onClick={this.removeAllTutorials}
+            onClick={this.removeAllWallets}
           >
             Remove All
           </button>
         </div>
         <div className="col-md-6">
-          {currentTutorial ? (
+          {currentWallet ? (
             <div>
-              <h4>Tutorial</h4>
+              <h4>Wallet</h4>
               <div>
                 <label>
                   <strong>Wallet Name:</strong>
                 </label>{" "}
-                {currentTutorial.title}
+                {currentWallet.wallet}
               </div>
               <div>
                 <label>
                   <strong>Wallet Address:</strong>
                 </label>{" "}
-                {currentTutorial.description}
+                {currentWallet.Address}
               </div>
               <div>
                 <label>
                   <strong>Status:</strong>
                 </label>{" "}
-                {currentTutorial.published ? "Published" : "Pending"}
+                {currentWallet.published ? "Published" : "Pending"}
               </div>
 
               <Link
-                to={"/tutorials/" + currentTutorial.id}
+                to={"/wallets/" + currentWallet.id}
                 className="badge badge-warning"
               >
                 Edit

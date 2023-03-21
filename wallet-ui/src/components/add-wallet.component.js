@@ -1,48 +1,48 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import WalletsDataService from "../services/wallets.service";
 
-export default class AddTutorial extends Component {
+export default class AddWallet extends Component {
   constructor(props) {
     super(props);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
-    this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.saveTutorial = this.saveTutorial.bind(this);
-    this.newTutorial = this.newTutorial.bind(this);
+    this.onChangeWallet = this.onChangeWallet.bind(this);
+    this.onChangeAddress = this.onChangeAddress.bind(this);
+    this.saveWallet = this.saveWallet.bind(this);
+    this.newWallet = this.newWallet.bind(this);
 
     this.state = {
       id: null,
-      title: "",
-      description: "", 
+      wallet: "",
+      Address: "", 
       published: false,
 
       submitted: false
     };
   }
 
-  onChangeTitle(e) {
+  onChangeWallet(e) {
     this.setState({
-      title: e.target.value
+      wallet: e.target.value
     });
   }
 
-  onChangeDescription(e) {
+  onChangeAddress(e) {
     this.setState({
-      description: e.target.value
+      Address: e.target.value
     });
   }
 
-  saveTutorial() {
+  saveWallet() {
     var data = {
-      title: this.state.title,
-      description: this.state.description
+      wallet: this.state.wallet,
+      address: this.state.address
     };
 
-    TutorialDataService.create(data)
+    WalletDataService.create(data)
       .then(response => {
         this.setState({
           id: response.data.id,
-          title: response.data.title,
-          description: response.data.description,
+          wallet: response.data.wallet,
+          address: response.data.address,
           published: response.data.published,
 
           submitted: true
@@ -54,11 +54,11 @@ export default class AddTutorial extends Component {
       });
   }
 
-  newTutorial() {
+  newWallet() {
     this.setState({
       id: null,
-      title: "",
-      description: "",
+      wallet: "",
+      address: "",
       published: false,
 
       submitted: false
@@ -71,39 +71,39 @@ export default class AddTutorial extends Component {
         {this.state.submitted ? (
           <div>
             <h4>Wallet sent for approval</h4>
-            <button className="btn btn-success" onClick={this.newTutorial}>
+            <button className="btn btn-success" onClick={this.newWallet}>
               Add
             </button>
           </div>
         ) : (
           <div>
             <div className="form-group">
-              <label htmlFor="title">Wallet Name</label>
+              <label htmlFor="wallet">Wallet Name</label>
               <input
                 type="text"
                 className="form-control"
-                id="title"
+                id="wallet"
                 required
-                value={this.state.title}
-                onChange={this.onChangeTitle}
-                name="title"
+                value={this.state.wallet}
+                onChange={this.onChangeWallet}
+                name="wallet"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="description">Wallet Address</label>
+              <label htmlFor="address">Wallet Address</label>
               <input
                 type="text"
                 className="form-control"
-                id="description"
+                id="address"
                 required
-                value={this.state.description}
-                onChange={this.onChangeDescription}
-                name="description"
+                value={this.state.address}
+                onChange={this.onChangeAddress}
+                name="address"
               />
             </div>
 
-            <button onClick={this.saveTutorial} className="btn btn-success">
+            <button onClick={this.saveWallet} className="btn btn-success">
               Submit
             </button>
           </div>
